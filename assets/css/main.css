@@ -8,10 +8,14 @@ figure, header, nav, section, article, aside, footer, figcaption {
   outline: 0;
 }
 
+body {
+    text-decoration: none;
+}
+
 .Calculator-Body {
     position: absolute;
     left: 50%;
-    top:50%;
+    top: 50%;
     transform: translate(-50%,-50%);
     width: 30vw;
     min-width: 400px;
@@ -89,5 +93,9 @@ figure, header, nav, section, article, aside, footer, figcaption {
 
 .Calculator-Body #buttons .button5:hover {
     background-color: rgb(207, 157, 170);
+}
+
+#instructions {
+
 }
 
