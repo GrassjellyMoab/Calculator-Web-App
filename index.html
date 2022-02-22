@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <!--CSS-->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="Calculator-Body">
+        <div class="row">
+            <div class="col-11" id="screen">
+                <span id="input"></span>
+                <span id="output-value">9999999999</span>
+            </div>
+        </div>
+        <div id="buttons" class="col-10">
+            <div class="row">
+                <div class="col-3 button4" onclick="add_to_input('(');">(</div>
+                <div class="col-3 button4" onclick="add_to_input(')');">)</div>
+                <div class="col-3 button4" onclick="add_to_input('e^');">e</div>
+                <div class="col-3 button4" onclick="add_to_input('log(');">log</div>
+            </div>
+            <div class="row">
+                <div class="col-3 button4" onclick="add_to_input('sin(');">sin</div>
+                <div class="col-3 button4" onclick="add_to_input('cos(');">cos</div>
+                <div class="col-3 button4" onclick="add_to_input('tan(');">tan</div>
+                <div class="col-3 button4" onclick="add_to_input('π');">π</div>
+            </div>
+            <div class="row">
+                <div class="col-3 button5" onclick="add_to_input('7');">7</div>
+                <div class="col-3 button5" onclick="add_to_input('8');">8</div>
+                <div class="col-3 button5" onclick="add_to_input('9');">9</div>
+                <div class="col-3 button5" onclick="Delete();">DEL</div>
+                <div class="col-3 button5" onclick="Clear();">C</div>
+            </div>
+            <div class="row">
+                <div class="col-3 button5" onclick="add_to_input('4');">4</div>
+                <div class="col-3 button5" onclick="add_to_input('5');">5</div>
+                <div class="col-3 button5" onclick="add_to_input('6');">6</div>
+                <div class="col-3 button5" onclick="add_to_input('x');">x</div>
+                <div class="col-3 button5" onclick="add_to_input('÷');">÷</div>
+            </div>
+            <div class="row">
+                <div class="col-3 button5" onclick="add_to_input('1');">1</div>
+                <div class="col-3 button5" onclick="add_to_input('2');">2</div>
+                <div class="col-3 button5" onclick="add_to_input('3');">3</div>
+                <div class="col-3 button5" onclick="add_to_input('+');">+</div>
+                <div class="col-3 button5" onclick="add_to_input('-');">-</div>
+            </div>
+            <div class="row">
+                <div class="col-3 button4" onclick="add_to_input('0');">0</div>
+                <div class="col-3 button4" onclick="add_to_input('.');">.</div>
+                <div class="col-3 button4">Ans</div>
+                <div class="col-3 button4" onclick="Results();">=</div>
+            </div>
+        </div>
+    </div>
+
+    <!--Javascript-->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/functions.js"></script>
+    <script src="assets/js/jqueryCompressedSlim.js"></script>
+</body>
+</html>
