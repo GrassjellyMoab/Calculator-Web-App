@@ -3,6 +3,8 @@
 var stack = [];
 var pi = Math.PI;
 var count = 0; // for the counting of right brackets
+var operators = ['+','-','x','÷','('];
+var SpecialFunctions = ['log', 'sin', 'cos', 'tan', 'e'];
 
 
 /*----------------- Basic Button Functions -----------------*/
@@ -96,7 +98,6 @@ function validBrackets(input, i) {
 // check if brackets are not used properly 
         // () is not valid
         if (input[i] == "(" && input[i+1] == ")") {
-            
             document.getElementById('output-value').innerHTML = 'Syntax Error';
             return 'false';
         }
@@ -119,6 +120,8 @@ function validBrackets(input, i) {
 }
 
 function ValidSpecialFunctions (input, i) {
+    var left_checks = [')','π'];
+    var right_checks = ['(','π','s','c','t','l'];
     // check validity of π
     if (input[i] == 'π' && !isNaN(input[i+1])) {
         document.getElementById('output-value').innerHTML = 'Syntax Error';
@@ -130,39 +133,175 @@ function ValidSpecialFunctions (input, i) {
         return 'false';
     }
     // check validity of +
-    if (input[i] == '+' && (isNaN(input[i+1]) || isNaN(input[i-1]))) {
+    if (input[i] == '+' && ((isNaN(input[i+1]) && !right_checks.includes(input[i+1])) || (isNaN(input[i-1]) && !left_checks.includes(input[i-1])))) {
         document.getElementById('output-value').innerHTML = 'Syntax Error';
         return 'false';
     }
     // check validity of -
-    if (input[i] == '+' && (isNaN(input[i+1]) || isNaN(input[i-1]))) {
+    if (input[i] == '-' && ((isNaN(input[i+1]) && !right_checks.includes(input[i+1])) || (isNaN(input[i-1]) && !left_checks.includes(input[i-1]) && input[i-1]!='('))) {
         document.getElementById('output-value').innerHTML = 'Syntax Error';
         return 'false';
     }
     // check validity of x
-    if (input[i] == '+' && (isNaN(input[i+1]) || isNaN(input[i-1]))) {
+    if (input[i] == 'x' && ((isNaN(input[i+1]) && !right_checks.includes(input[i+1])) || (isNaN(input[i-1]) && !left_checks.includes(input[i-1])))) {
         document.getElementById('output-value').innerHTML = 'Syntax Error';
         return 'false';
     }
     // check validity of ÷
-    if (input[i] == '+' && (isNaN(input[i+1]) || isNaN(input[i-1]))) {
+    if (input[i] == '÷' && ((isNaN(input[i+1]) && !right_checks.includes(input[i+1])) || (isNaN(input[i-1]) && !left_checks.includes(input[i-1])))) {
         document.getElementById('output-value').innerHTML = 'Syntax Error';
         return 'false';
     }
     // check validity of .
-    if (input[i] == '.' && isNaN(input[i+1])) {
+    if (input[i] == '.' && (isNaN(input[i+1]) || left_checks.includes(input[i-1]))) {
         document.getElementById('output-value').innerHTML = 'Syntax Error';
         return 'false';
     }
-    
-    
 }
 
 
 /*----------------- SubFunctions -----------------*/
-function CondenseSpecialFunctions() {
-    // condense log(), sin(), cos(), tan(), e^()
+function CondenseSpecialFunctions(input) {
+    // condense log(), sin(), cos(), tan()
+    var first_part;
+    var second_part;
+    // dunnid, run all through same loop, check if .includes(Special function etc) else continuing running then do recursion until no more special functions
+    const LogCondense = (input) => {
+        for (let i=0; i < input.length; i++) {
+            let temp = "";
+            // if log()
+            if (input[i] == 'l') {
+                for (let x=i+4; x < input.length-i; x++) {
+                    if (input[x] == ')') {
+                        if (x!=input.length){
+                            second_part = input.slice(x+1);
+                        }
+                        else if (x==input.length) {
+                            second_part = "";
+                        }
+                        break;
+                    }
+                    temp += input[x];
+                }
+                let logged = log(temp);
+                first_part = input.slice(0,i)
+                input = first_part + logged + second_part;
+                break;
+            }   
+        }
+    }
+    const SinCondense = (input) => {
+    // if sin()
+        for (let i=0; i < input.length; i++) {
+            let temp = "";
+            if (input[i] == 's') {
+                for (let x=i+4; x < input.length; x++) {
+                    if (input[x] == ')') {
+                        if (x!=input.length){
+                            second_part = input.slice(x+1);
+                        }
+                        else if (x==input.length) {
+                            second_part = "";
+                        }
+                        break;
+                    }
+                    temp += input[x];
+                }
+                let sinned= sin(temp);
+                first_part = input.slice(0,i)
+                input = first_part + sinned + second_part;
+                break;
+            }   
+        }
+    }   
+    // if cos()
+    const CosCondense = (input) => {
+        for (let i=0; i < input.length; i++) {
+            let temp = "";
+            if (input[i] == 'c') {
+                for (let x=i+4; x < input.length; x++) {
+                    if (input[x] == ')') {
+                        if (x!=input.length){
+                            second_part = input.slice(x+1);
+                        }
+                        else if (x==input.length) {
+                            second_part = "";
+                        }
+                        break;
+                    }
+                    temp += input[x];
+                }
+                let cossed = cos(temp);
+                first_part = input.slice(0,i)
+                input = first_part + cossed + second_part;
+                break;
+            }   
+        }
+    }
+
+    // if tan()
+    const TanCondense = (input) => {
+        for (let i=0; i < input.length; i++) {
+            let temp = "";
+            if (input[i] == 's') {
+                for (let x=i+4; x < input.length; x++) {
+                    if (input[x] == ')') {
+                        if (x!=input.length){
+                            second_part = input.slice(x+1);
+                        }
+                        else if (x==input.length) {
+                            second_part = "";
+                        }
+                        break;
+                    }
+                    temp += input[x];
+                }
+                let tanned = tan(temp);
+                first_part = input.slice(0,i)
+                input = first_part + tanned + second_part;
+                break;
+            }   
+        }
+    }
+
+    // if e^()
+    const ECondense = (input) => {
+        for (let i=0; i < input.length; i++) {
+            let temp = "";
+            if (input[i] == 's') {
+                for (let x=i+3; x < input.length; x++) {
+                    if (input[x] == ')') {
+                        if (x!=input.length){
+                            second_part = input.slice(x+1);
+                        }
+                        else if (x==input.length) {
+                            second_part = "";
+                        }
+                        break;
+                    }
+                    temp += input[x];
+                }
+                let eulered= Euler(temp);
+                first_part = input.slice(0,i)
+                input = first_part + eulered + second_part;
+                break;
+            }   
+        }
+    }
+    
+    // start condensing from most inner special function
+    const InnerCondenseSpecial = (input) => {
+        // look for most inner 
+        for (let i=0; i<input.length;i++) {
+            let temp = "";
+            // if (input[i] == )
+        }
+    }
+    console.log(input);
 }
+    
+    
+
 
 function Condense_Bracket_Values() {
     // get index of brackets and form the pairs then condense them eg (((9+9)*8)+9) => ((18*8)+9) => (144+9) => 153
@@ -187,7 +326,7 @@ function Division(a, b) {
     return a / b
 }
 
-function Exponential(a) {
+function Euler(a) {
     return Math.exp(a);
 }
 
@@ -204,14 +343,14 @@ function tan(a) {
 }
 
 function log(a) {
-    return Math.log(a);
+    return Math.log10(a);
 }
 /*----------------- -----------------*/
 function Results() {
     // variable to leave function if true
     var exit = false;
-    var output = document.getElementById('output-value');
-    var input = document.getElementById('input').innerHTML;
+    var output = $('#output-value');
+    var input = $('#input').html();
     var BracketsResult;
      // count to check if there is a '(' before
     count = 0;
@@ -231,12 +370,12 @@ function Results() {
     if (exit == true) {
         return;
     }
-
     // if bracket stack has values, that means there are invalid brackets
     if (BracketsResult.length) {
-        output.innerHTML = 'Syntax Error';
+        output.html('Syntax Error');
+        return;
     }
     //reset bracket stack
     stack = [];
-
-}
+    CondenseSpecialFunctions(input);
+    }
