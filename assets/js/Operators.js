@@ -15,9 +15,9 @@ function Division(a, b) {
     return a / b
 }
 
-function Euler(a) {
-    return Math.exp(a);
-}
+// function Euler(a) {
+//     return Math.exp(a);
+// }
 
 function sin(a) {
     return Math.sin(a);
@@ -35,3 +35,7 @@ function log(a) {
     return Math.log10(a);
 }
 
+
+function power(a,b) {
+    return Math.pow(a,b);
+}

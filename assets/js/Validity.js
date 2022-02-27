@@ -5,8 +5,8 @@ function ValidCheck (input) {
     var operator_count = 0; // counting the number of operators;
     var output = $('#output.value');
     var operators = ['+','-','x','÷'];
-    var left_checks = [')','π'];
-    var right_checks = ['(','π','s','c','t','l'];
+    var left_checks = [')','π','e'];
+    var right_checks = ['(','π','s','c','t','l','e'];
     var output = $('#output.value');
     var result = "true";
 
@@ -30,12 +30,8 @@ function ValidCheck (input) {
             result = 'false';
             break;
         }
-
-        // after right bracket can only be operator or nothing
-        if (input[i] == ")" && !operators.includes(input[i+1]) && (input[i+1]!=')' || input[i+1]!=')') && (i!=input.length-1)) {
-            console.log(i);
-            console.log(input.length-1);
-            console.log('here');
+        // after right bracket can only be operator or '(' or nothing (take into account when ) is last char
+        if (input[i] == ")" && !operators.includes(input[i+1]) && input[i+1]!=')' && input[i+1]!='(' && i!=input.length-1) {
             output.html('Syntax Error');
             result = 'false';
             break;
@@ -54,8 +50,8 @@ function ValidCheck (input) {
             result = 'false';
         }
 
-        // check validity of π
-        if (input[i] == 'π' && !isNaN(input[i+1])) {
+        // check validity of π and e
+        if ((input[i] == 'π' || input[i] == 'e') && !isNaN(input[i+1])) {
             output.html('Syntax Error');
             result = 'false';
             break;
@@ -92,6 +88,12 @@ function ValidCheck (input) {
         }
 
         // check validity of -
+        // (--9) is not acceptable
+        if (input[i] == '(' && input[i+1] == '-' && input[i+2] == '-') {
+            output.html('Syntax Error');
+            result = 'false';
+            break;
+        }
         // Special Case so we can consider -ve numbers
         if (input[i] == '-' && // char is '-'
             (input[i+1] == '÷' || input[i+1] == 'x') // -÷ and -x leads to syntax error

@@ -38,10 +38,11 @@ body {
 }
 
 .Calculator-Body #screen #input {
-    overflow-x: scroll;
+    word-wrap: break-word;
     font-size: calc(18px + 0.2vw);
+    line-height: 1;
+    
 }
-
 .Calculator-Body #screen #output-value {
     position: absolute;
     font-size: calc(20px + 0.2vw);
