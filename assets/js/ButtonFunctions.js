@@ -6,8 +6,8 @@ function add_to_input(val) {
 
 // keydown event add to input more conveniently
 $(document).keydown(function(e) {
-    // let KeyEvents = ['40', '41', '101', '120', '42', '47', '45', '46']; //['(', ')', 'e', 'x', '*', '/', '-', '.'];
-    KeyEvents = {69:'e',88:'x',190:'.',191:'÷',189:'-'}; // 'e' , 'x' , '.' , '/' , '-'
+    // let KeyEvents = ['40', '41', '101', '120', '42', '47', '45', '46']; //['(', ')', 'e', '×', '*', '/', '-', '.'];
+    KeyEvents = {69:'e',88:'×',190:'.',191:'÷',189:'-'}; // 'e' , 'x' , '.' , '/' , '-'
     var ShiftKeyEvents = {57:'(',48:')',187:'+',56:'x'}; // '(' , ')' , ' + ' , '*'
     var key = (e.keyCode ? e.keyCode : e.which); //e.keyCode == undefined, thus e.which value is taken
     // Number Keys

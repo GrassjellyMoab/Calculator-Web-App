@@ -4,7 +4,7 @@ function ValidCheck (input) {
     var bracketpaircheck = 0;
     var operator_count = 0; // counting the number of operators;
     var output = $('#output.value');
-    var operators = ['+','-','x','÷'];
+    var operators = ['+','-','×','÷'];
     var left_checks = [')','π','e'];
     var right_checks = ['(','π','s','c','t','l','e'];
     var output = $('#output.value');
@@ -57,7 +57,7 @@ function ValidCheck (input) {
             break;
         }
         // if first char is an operator
-        if (i == 0 && (input[i] == '+' || input[i] == 'x' || input[i] == '÷')) {
+        if (i == 0 && (input[i] == '+' || input[i] == '×' || input[i] == '÷')) {
             output.html('Syntax Error');
             result = 'false';
             break;
@@ -68,8 +68,8 @@ function ValidCheck (input) {
             result = 'false';
             break;
         }
-        // check validity of x
-        if (input[i] == 'x' && ((isNaN(input[i+1] && input[i+1]!='-') && !right_checks.includes(input[i+1])) || (isNaN(input[i-1]) && !left_checks.includes(input[i-1])))) {
+        // check validity of ×
+        if (input[i] == '×' && ((isNaN(input[i+1] && input[i+1]!='-') && !right_checks.includes(input[i+1])) || (isNaN(input[i-1]) && !left_checks.includes(input[i-1])))) {
             output.html('Syntax Error');
             result = 'false';
             break;
@@ -96,7 +96,7 @@ function ValidCheck (input) {
         }
         // Special Case so we can consider -ve numbers
         if (input[i] == '-' && // char is '-'
-            (input[i+1] == '÷' || input[i+1] == 'x') // -÷ and -x leads to syntax error
+            (input[i+1] == '÷' || input[i+1] == '×') // -÷ and -x leads to syntax error
             ) {
             // conditions 
             // -% no go, -+ is ok, -- is ok, if - i+2 char cannot be operator unless i+1 is a (

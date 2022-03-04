@@ -2,7 +2,7 @@
 // valid Brackets
 var pi = Math.PI;
 var e = Math.E;
-var operators = ['+','-','x','÷'];
+var operators = ['+','-','×','÷'];
 var NUM_MAX = 9.999999999 * power(10,99);
 
 
@@ -37,7 +37,7 @@ const Equate_Simplified = (expression) => {
             arr_index_counter += 2;
         }
     }
-    console.log(arr);
+
 
      // prioritise geometric operators 
     var geo_operator_count;
@@ -45,7 +45,7 @@ const Equate_Simplified = (expression) => {
         geo_operator_count = 0;
         for (let x=0; x<arr.length; x++) {
             // if multiply
-            if (arr[x]=='x') {
+            if (arr[x]=='×') {
                 let temp = arr;
                 temp = arr.slice(0,x-1);
                 temp.push(Multiply(arr[x-1],arr[x+1]));
@@ -105,206 +105,102 @@ const Equate_Simplified = (expression) => {
 }
 /*----------------- SubFunctions -----------------*/
 
-// start condensing from most inner special function
-const CondenseSpecialFunctions = (input) => { 
-    var SpecialFunctions = ['log', 'sin', 'cos', 'tan']; 
-    while (true) {
-        // look for most inner 
-        let LastIndex;
+// start simplifying ALL brackets
+const CondenseBrackets = (input) => {
+    while(true) {
         let end_condition = 0;
-        for (let i=0; i<input.length;i++) {
-            // if sin cos tan log or e
-            temp = "";
-            if ((input[i] == 's' && input[i+1] == 'i') || (input[i] == 'c' && input[i+1] == 'o') || input[i] == 't' || input[i] == 'l' || input[i] == 'e') {
+
+        for (let i=0; i<input.length; i++) {
+            let LastIndex = 0;
+            let bool = true;
+            if (input[i]=='(') {
+                // get matching bracket with inner content first
                 let temp = "";
-                let bool = true;
-                let TempCount1 = 1;
-                let TempCount2 = 0;
-
-                // get the matching pair of most outer () 
-                if ((input[i] == 's' && input[i+1] == 'i') || (input[i] == 'c' && input[i+1] == 'o') || (input[i] == 't') || (input[i] == 'l')) {
-                    end_condition += 1;
-                    for (let x=i+4; x < input.length; x++) {
-                        if (input[x] == '(') {
-                            TempCount1 += 1;
-                        }
-                        else if (input[x] == ')') {
-                            TempCount2 += 1;
-                        }
-                        if (input[x] == ')' && (TempCount1 == TempCount2)) {
-                            LastIndex = x;
-                            break; // dont include end brackets into temp variable
-                        }
-                        temp += input[x]; // temp is the string within the 2 matching brackets
-                    }
-                }
-    
-                // check whether its a special function with special functions inside
-                for (let z=0; z<SpecialFunctions.length; z++) {
-                    if (temp.includes(SpecialFunctions[z])) {
-                        
-                        bool = false;
-                    }
-                }
-                // if no nested functions eg. sin(sin9))
-                if (bool) {
-                    let second_part = input.slice(LastIndex+1);
-                    let first_part = input.slice(0,i);
-                    if (!isNaN(first_part[first_part.length-1])) {
-                        if (input[i] == 's') {
-                            input = first_part + 'x'+ sin(Equate_Simplified(temp)) + second_part;
-                        }
-                        else if (input[i] == 'c') {
-                            input = first_part + 'x'+ cos(Equate_Simplified(temp)) + second_part;
-                        }
-                        else if (input[i] == 't') {
-                            input = first_part + 'x'+ tan(Equate_Simplified(temp)) + second_part;
-                        }
-                        else if (input[i] == 'l') {
-                            input = first_part + 'x'+ log(Equate_Simplified(temp)) + second_part;
-                        }
-                    }
-
-                    else {
-                        if (input[i] == 's') {
-                            input = first_part + sin(Equate_Simplified(temp)) + second_part;
-                        }
-                        else if (input[i] == 'c') {
-                            input = first_part + cos(Equate_Simplified(temp)) + second_part;
-                        }
-                        else if (input[i] == 't') {
-                            input = first_part + tan(Equate_Simplified(temp)) + second_part;
-                        }
-                        else if (input[i] == 'l') {
-                            input = first_part + log(Equate_Simplified(temp)) + second_part;
-                        }
-                    }
-                }
-            }
-        }
-        // end the while loop if no more of those brackets
-        if (end_condition == 0) {
-            break;
-        }
-    }
-    // return most simplified
-
-    return input;
-}
-
-    
-    
-function Condense_Bracket_Values(input) {
-    var end_condition;
-
-    // get index of brackets and form the pairs then condense them eg (((9+9)*8)+9) => ((18*8)+9) => (144+9) => 153
-    while (true) {
-        end_condition = 0;
-        let productbracketcheck = 0;
-
-        for (let i=0; i < input.length; i++) {
-            if (input[i] == '(') {
-                var temp = "";
-                let bool = true;
-                // prevent end condition where there are no more normal brackets
-                if (input[i-1]!='n' && input[i-1]!='s' && input[i-1]!='^' && input[i-1]!='g' && input[i-1]!=')' && isNaN(input[i-1])) {
-                    end_condition += 1;
-                }
-
                 let TempCount1 = 1;
                 let TempCount2 = 0;
                 for (let x=i+1; x < input.length; x++) {
                     if (input[x] == '(') {
                         TempCount1 += 1;
-                        // check if product brackets exist
-                        if (!isNaN(input[x-1])) {
-                            productbracketcheck += 1;
-                        }
                     }
                     else if (input[x] == ')') {
                         TempCount2 += 1;
                     }
-                    if (input[x] == ')' && (TempCount1 == TempCount2)) {
+                     // get matching ')' for input[i] == '()
+                     if (input[x] == ')' && (TempCount1 == TempCount2)) {
                         LastIndex = x;
                         break;
                     }
                     temp += input[x];
                 }
-
-                if (temp.includes('(') || temp.includes(')') && productbracketcheck==1){
+                
+                // if content inside inner bracket has more brackets ignore and move to next index
+                if (temp.includes('(') || temp.includes(')')) {
                     bool = false;
                 }
-        
-                // extra NaN to prevent mistaking normal bracket for multiplication brackets
+
+                // if temp does not contain extra brackets
                 if (bool) {
-                // use EquateSimplified function
-                    if (productbracketcheck) {
-                        // filter out all product brackets first
-                        input = BracketMultiply(input);
-                        break;
-                    }
-                    // if log sin cos tan or e dont remove brackets
-                    else if (input[i-1]=='n' || input[i-1]=='s' || input[i-1]=='^' || input[i-1]=='g' || input[i-1]==')' ||!isNaN(input[i-1])) {
-                        input = input.slice(0,i+1) + Equate_Simplified(temp) + input.slice(LastIndex);
-                        break;
-                    }
-                    else {
+                    // if normal brackets
+                    if (input[i-1]!='n' && input[i-1]!='s' && input[i-1]!='g' && isNaN(input[i-1])) {
                         input = input.slice(0,i) + Equate_Simplified(temp) + input.slice(LastIndex+1);
+                        end_condition += 1;
                         break;
+                    }
+
+                    // if special bracket
+                    if (input[i-3]=='s') {
+                        input = input.slice(0,i-3) + sin(Equate_Simplified(temp)) + input.slice(LastIndex+1);
+                        end_condition += 1;
+                        break;
+                    }
+                    else if (input[i-3]=='c') {
+                        input = input.slice(0,i-3) + cos(Equate_Simplified(temp)) + input.slice(LastIndex+1);
+                        end_condition += 1;
+                        break;
+                    }
+                    else if (input[i-3]=='t') {
+                        input = input.slice(0,i-3) + tan(Equate_Simplified(temp)) + input.slice(LastIndex+1);
+                        end_condition += 1;
+                        break;
+                    }
+                    else if (input[i-3]=='l') {
+                        input = input.slice(0,i-3) + log(Equate_Simplified(temp)) + input.slice(LastIndex+1);
+                        end_condition += 1;
+                        break;
+                    }
+
+                    // if product bracket
+                    if (!isNaN(input[i-1])) {
+                        // if null behind right bracket,
+                        if (LastIndex == input.length) {
+                            input = input.slice(0,i) + '×' + Equate_Simplified(input.slice(i+1, LastIndex));
+                            end_condition += 1;
+                            break;
+                        }
+                
+                        else if (input[LastIndex+1] == '(') {
+                            input = input.slice(0,i) + '×' + Equate_Simplified(input.slice(i+1,LastIndex)) + input.slice(LastIndex+1);
+                            end_condition += 1;
+                            break;
+                        }
+                        else {
+                            input = input.slice(0,i) + '×' + Equate_Simplified(input.slice(i+1, LastIndex)) + input.slice(LastIndex+1);
+                            end_condition += 1;
+                            break;
+                        }
                     }
                 }
             }
         }
-
-        // end the while loop if no more of those brackets
+        
+        // end the while loop when no more brackets
         if (end_condition == 0) {
             break;
         }
     }
-    // so only outerfunction can do the return thing so i need to edit the input tbh
-    return input;
-}
-
-const BracketMultiply = (input) => {
-    let LastIndex;
-    while(true) {
-        let end_condition = 0;
-        for (let i=0; i<input.length; i++) {
-            // select the product bracket
-            if (input[i]=='(' && !isNaN(input[i-1])) {
-                // find the matching bracket
-                for (let x = i+1; x < input.length; x++) {
-                    if (input[x] == ')') {
-                        LastIndex = x;
-                        break;
-                    }
-                }
-                end_condition += 1;
-
-
-                // if null behind right bracket,
-                if (LastIndex == input.length) {
-                    input = input.slice(0,i) + 'x' + Equate_Simplified(input.slice(i+1, LastIndex));
-                    break;
-                }
-        
-                else if (input[LastIndex+1] == '(') {
-                    input = input.slice(0,i) + 'x' + Equate_Simplified(input.slice(i+1,LastIndex)) + input.slice(LastIndex+1);
-                    break;
-                }
-                else {
-                    input = input.slice(0,i) + 'x' + Equate_Simplified(input.slice(i+1, LastIndex)) + input.slice(LastIndex+1);
-                    break;
-                }
-            }
-        }
-        // end loop once no more product brackets
-        if (end_condition == 0) {
-            break;
-        }
-    }   
+    // return final expression with no brackets
     return input
-}
+};
 
 /*----------------- Main Function -----------------*/
 function Results() {
@@ -376,12 +272,8 @@ function Results() {
     }
 
     // Condense all Brackets
-    // check for operators and use them (prioritise geometric operators)
-    input = Condense_Bracket_Values(input);
-    input = CondenseSpecialFunctions(input);
-    // filter out all product brackets
-    input = BracketMultiply(input);
-    // equate all
+    input = CondenseBrackets(input);
+    // get final value
     input = Equate_Simplified(input);
 
 
@@ -390,8 +282,7 @@ function Results() {
         output.html('Math Error');
         return;
     }
-
-    output.html(input);
-    }
+     output.html(input);
+};
 
  
