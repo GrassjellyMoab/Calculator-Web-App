@@ -226,9 +226,16 @@ function Results() {
         return 0;
     }
 
-
     // replace π and e with number
+    let ArrOfSigns = ['s', 'c', 't', 'l'];
     for (let i=0; i<input.length; i++) {
+        // if sin cos tan etc right behind π or e, eg πsin(9) or even 9sin(9)
+        if (ArrOfSigns.includes(input[i+1])) {
+            if ((input[i]=='π' || input[i]=='e' || !isNaN(input[i]))) {
+                input = input.slice(0,i+1) + '×' + input.slice(i+1);
+            }
+        }
+        
         if (input[i] == 'π') {
             if (i==0) {
                 // pi is the only char
@@ -251,12 +258,12 @@ function Results() {
         }
         else if (input[i] == 'e') {
             if (i==0) {
-                // pi is the only char
+                // e is the only char
                 if (i == input.length) {
                     input = e;
                     break;
                 }
-                // pi is the first char but more chars behind
+                // e is the first char but more chars behind
                 else if (i < input.length) {
                     input = e + input.slice(1);
                 }
